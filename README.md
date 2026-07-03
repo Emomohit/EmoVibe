@@ -1,5 +1,7 @@
-﻿# EMOVibes 🎵
+# EMOVibes 🎵
 *Feel the Music, Live the Vibe.*
+
+🌐 **Official Website & Download:** [emovibes.vercel.app](https://emovibes.vercel.app/)
 
 Welcome to **EMOVibes**, a modern, premium, and purely emotional music player built to provide the ultimate ad-free, secure, and beautiful listening experience directly on your Android device.
 
