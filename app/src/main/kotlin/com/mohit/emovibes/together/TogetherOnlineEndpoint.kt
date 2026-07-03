@@ -1,4 +1,4 @@
-﻿/*
+/*
  * EMOVibes Project Original (2026)
  * Mohit (github.com/Mohit)
  * Licensed Under GPL-3.0 | see git history for contributors
@@ -23,7 +23,7 @@ object TogetherOnlineEndpoint {
     private const val EndpointSourceUrl =
         "https://raw.githubusercontent.com/Emomohit/EmoVibe/refs/heads/main/EMOVibesServer.txt"
 
-    private const val CacheTtlMs: Long = 6 * 60 * 60 * 1000L
+    private const val CacheTtlMs: Long = 0L
 
     private val httpClient =
         HttpClient(OkHttp) {

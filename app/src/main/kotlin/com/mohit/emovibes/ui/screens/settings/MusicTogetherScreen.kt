@@ -237,7 +237,7 @@ fun MusicTogetherScreen(
     }
 
     var joinInput by rememberSaveable { mutableStateOf(lastJoinLink) }
-    val canJoin = remember(joinInput) { TogetherLink.decode(joinInput) != null }
+    val canJoin = remember(joinInput) { TogetherLink.decode(joinInput) != null || (joinInput.trim().length >= 4 && joinInput.trim().all { it.isDigit() }) }
 
     if (showJoinDialog) {
         TextFieldDialog(
@@ -245,12 +245,16 @@ fun MusicTogetherScreen(
             placeholder = { Text(stringResource(R.string.together_join_link_hint)) },
             singleLine = false,
             maxLines = 8,
-            isInputValid = { TogetherLink.decode(it) != null },
+            isInputValid = { TogetherLink.decode(it) != null || (it.trim().length >= 4 && it.trim().all { char -> char.isDigit() }) },
             onDone = { raw ->
                 val trimmed = raw.trim()
                 joinInput = trimmed
                 setLastJoinLink(trimmed)
-                playerConnection?.service?.joinTogether(trimmed, displayName)
+                if (trimmed.all { it.isDigit() }) {
+                    playerConnection?.service?.joinTogetherOnline(trimmed, displayName)
+                } else {
+                    playerConnection?.service?.joinTogether(trimmed, displayName)
+                }
             },
             onDismiss = { showJoinDialog = false },
         )
@@ -396,8 +400,7 @@ fun MusicTogetherScreen(
                         sessionState !is TogetherSessionState.Joined,
                 isLoading = isCreatingSessionLoading,
                 onStartSession = {
-                    playerConnection?.service?.startTogetherHost(
-                        port = port,
+                    playerConnection?.service?.startTogetherOnlineHost(
                         displayName = displayName,
                         settings = TogetherRoomSettings(
                             allowGuestsToAddTracks = allowAddTracks,
@@ -525,7 +528,7 @@ private fun HostSectionCard(
                         fontWeight = FontWeight.SemiBold,
                     )
                     Text(
-                        stringResource(R.string.together_lan),
+                        stringResource(R.string.together_online),
                         style = MaterialTheme.typography.bodySmall,
                         color = MaterialTheme.colorScheme.onSurfaceVariant,
                     )
@@ -548,7 +551,7 @@ private fun HostSectionCard(
                             tint = MaterialTheme.colorScheme.onSecondaryContainer,
                         )
                         Text(
-                            "LAN",
+                            "ONLINE",
                             style = MaterialTheme.typography.labelSmall,
                             fontWeight = FontWeight.SemiBold,
                             color = MaterialTheme.colorScheme.onSecondaryContainer,
