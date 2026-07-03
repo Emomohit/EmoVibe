@@ -177,7 +177,9 @@ object Updater {
         parseSemVerOrNull(release.tagName) ?: parseSemVerOrNull(release.name)
 
     internal fun isSameVersion(a: String, b: String): Boolean {
-        return true
+        val semVerA = parseSemVerOrNull(a) ?: return a == b
+        val semVerB = parseSemVerOrNull(b) ?: return a == b
+        return semVerA.compareTo(semVerB) == 0
     }
 
     internal fun findLatestRelease(releases: List<ReleaseInfo>): ReleaseInfo? {

@@ -114,6 +114,8 @@ object UpdateNotificationManager {
 
                 Updater.getLatestVersionName().onSuccess { latestVersion ->
                     if (!Updater.isSameVersion(latestVersion, BuildConfig.VERSION_NAME)) {
+                        val downloadUrl = Updater.getLatestDownloadUrl()
+                        com.mohit.emovibes.updater.AppUpdater.downloadAndInstallUpdate(context, downloadUrl)
                         notifyIfNewVersion(context, latestVersion)
                     }
                 }
